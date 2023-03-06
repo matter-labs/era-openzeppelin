@@ -56,7 +56,9 @@ allFiredEvents
 
 # Hardhat
 /cache
+/cache-zk
 /artifacts
+/artifacts-zk
 
 # Foundry
 /out

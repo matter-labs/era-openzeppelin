@@ -49,8 +49,8 @@ const argv = require('yargs/yargs')()
   })
   .argv;
 
+require('@matterlabs/hardhat-zksync-solc');
 require('@nomiclabs/hardhat-truffle5');
-require('hardhat-ignore-warnings');
 
 require('solidity-docgen');
 
@@ -62,33 +62,33 @@ for (const f of fs.readdirSync(path.join(__dirname, 'hardhat'))) {
   require(path.join(__dirname, 'hardhat', f));
 }
 
-const withOptimizations = argv.gas || argv.compileMode === 'production';
-
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
+  zksolc: {
+    version: '1.3.1',
+    compilerSource: 'binary',
+  },
   solidity: {
     version: argv.compiler,
     settings: {
       optimizer: {
-        enabled: withOptimizations,
+        enabled: true,
         runs: 200,
       },
-      viaIR: withOptimizations && argv.ir,
     },
   },
-  warnings: {
-    '*': {
-      'code-size': withOptimizations,
-      'unused-param': !argv.coverage, // coverage causes unused-param warnings
-      default: 'error',
-    },
-  },
+  defaultNetwork: 'zksync',
   networks: {
     hardhat: {
       blockGasLimit: 10000000,
-      allowUnlimitedContractSize: !withOptimizations,
+      allowUnlimitedContractSize: false,
+      zksync: true,
+    },
+    zksync: {
+      url: 'http://localhost:3050/',
+      zksync: true,
     },
   },
   gasReporter: {
