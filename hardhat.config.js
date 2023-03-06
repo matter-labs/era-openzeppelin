@@ -40,7 +40,7 @@ const argv = require('yargs/yargs')()
     compiler: {
       alias: 'compileVersion',
       type: 'string',
-      default: '0.8.13',
+      default: '0.8.12',
     },
     coinmarketcap: {
       alias: 'coinmarketcapApiKey',
@@ -49,6 +49,7 @@ const argv = require('yargs/yargs')()
   })
   .argv;
 
+require('@matterlabs/hardhat-zksync-solc');
 require('@nomiclabs/hardhat-truffle5');
 
 if (argv.gas) {
@@ -65,6 +66,10 @@ const withOptimizations = argv.gas || argv.compileMode === 'production';
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
+  zksolc: {
+    version: '0.1.0',
+    compilerSource: 'binary',
+  },
   solidity: {
     version: argv.compiler,
     settings: {
@@ -75,10 +80,16 @@ module.exports = {
       viaIR: withOptimizations && argv.ir,
     },
   },
+  defaultNetwork: 'zksync',
   networks: {
     hardhat: {
       blockGasLimit: 10000000,
       allowUnlimitedContractSize: !withOptimizations,
+      zksync: true,
+    },
+    zksync: {
+      url: 'http://localhost:3050/',
+      zksync: true,
     },
   },
   gasReporter: {
