@@ -40,7 +40,7 @@ const argv = require('yargs/yargs')()
     compiler: {
       alias: 'compileVersion',
       type: 'string',
-      default: '0.8.12',
+      default: '0.8.17',
     },
     coinmarketcap: {
       alias: 'coinmarketcapApiKey',
@@ -65,7 +65,7 @@ for (const f of fs.readdirSync(path.join(__dirname, 'hardhat'))) {
  */
 module.exports = {
   zksolc: {
-    version: '0.1.0',
+    version: '1.3.1',
     compilerSource: 'binary',
   },
   solidity: {
